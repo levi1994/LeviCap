@@ -7,6 +7,8 @@ import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
 
+import com.levilee.levicap.model.GlobalValue;
+
 public class StopAction implements ActionListener{
 	private Logger log = Logger.getLogger("log");
 	private JButton button_start;
@@ -21,7 +23,7 @@ public class StopAction implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		StartAction.isLiveCapture =  false;
+		GlobalValue.isLiveCapture =  false;
 		log.debug("×¥°üÍ£Ö¹");
 		button_start.setEnabled(true);
 		button_stop.setEnabled(false);

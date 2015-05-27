@@ -1,33 +1,25 @@
 package com.levilee.levicap.control.action;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JComboBox;
-import javax.swing.JTextPane;
-
-import org.apache.log4j.Logger;
-
+import com.levilee.levicap.control.ViewControler;
+import com.levilee.levicap.model.GlobalValue;
 import com.levilee.levicap.model.analyzer.Analyzer;
-
 public class InfoAction implements ActionListener {
-	private JTextPane textPane_info;
-	private JComboBox<String> comboBox_pacInfo;
 	private Analyzer analyzer ;
-	private Logger log = Logger.getLogger("log");
-	public InfoAction(JTextPane textPane_info,JComboBox<String> comboBox_pacInfo,Analyzer analyzer) {
-		this.textPane_info = textPane_info;
-		this.comboBox_pacInfo = comboBox_pacInfo;
+	private ViewControler viewControler;
+	public InfoAction(Analyzer analyzer,ViewControler viewControler) {
 		this.analyzer = analyzer;
+		this.viewControler = viewControler;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int t = comboBox_pacInfo.getSelectedIndex();
+		int t = viewControler.getComboBox_pacInfo().getSelectedIndex();
 		if(t==-1) return;
 		//获取包信息并显示
-		log.info("Combobox选中值为："+t);
-		textPane_info.setText(analyzer.infolist.get(t));
+		GlobalValue.log.info("Combobox选中值为："+t);
+		System.out.println("infolist的大小为"+analyzer.infolist.size());
+		viewControler.getTextPane_info().setText(analyzer.infolist.get(t));
 	}
 
 }

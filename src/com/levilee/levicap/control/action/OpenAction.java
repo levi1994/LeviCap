@@ -7,15 +7,20 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import jpcap.packet.EthernetPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
+
 import org.apache.log4j.Logger;
+
+import com.levilee.levicap.control.ViewControler;
 import com.levilee.levicap.model.GlobalValue;
 import com.levilee.levicap.model.bean.MyPacket;
 import com.levilee.levicap.model.util.ByteUtil;
@@ -23,17 +28,10 @@ import com.levilee.levicap.model.util.ByteUtil;
 
 public class OpenAction implements ActionListener {
 	private JFileChooser jFileChooser;
-	private JFrame jFrame;
-	private JTable jTable_list;
-	private DefaultTableModel defaultTableModel;
-	private  Logger log = Logger.getLogger("log");
-	public OpenAction(JFrame jFrame,JTable jTable_list,
-			DefaultTableModel defaultTableModel) {
-		this.jFrame = jFrame;
-		this.jTable_list = jTable_list;
-		this.defaultTableModel = defaultTableModel;
+	private ViewControler viewControler;
+	public OpenAction(ViewControler viewControler) {
+      this.viewControler = viewControler;
 	}
-
 	/*
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 * 使用该方法从文件中读入list对象
@@ -41,19 +39,19 @@ public class OpenAction implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		jFileChooser = new JFileChooser();
-		log.info("正在加载文件选择窗口");
+		GlobalValue.log.info("正在加载文件选择窗口");
 		int ret = jFileChooser.showOpenDialog(jFileChooser);
-		log.info("ret="+ret);
+		GlobalValue.log.info("ret="+ret);
 		File file = null;
 		if (ret == JFileChooser.APPROVE_OPTION) {
 			file = jFileChooser.getSelectedFile();
 		}
 		//添加限制条件，避免报错
 		if(file==null) {
-			log.debug("尚未选择文件");
+			GlobalValue.log.debug("尚未选择文件");
 			return;
 		}
-		log.info("filepath:"+file.getPath());
+		GlobalValue.log.info("filepath:"+file.getPath());
 		try {
 			FileInputStream in = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(in);
@@ -67,15 +65,15 @@ public class OpenAction implements ActionListener {
 			final List<MyPacket> list = (List<MyPacket>) readObject;
 			GlobalValue.packetList.clear();
 			GlobalValue.packetList = list;
-			log.debug("文件读取成功");
+			GlobalValue.log.debug("文件读取成功");
 			in.close();
 			ois.close();
 		   /*刷新窗口*/
-			log.debug("正在刷新窗口");
+			GlobalValue.log.debug("正在刷新窗口");
 			//清除窗口数据
-			defaultTableModel.setRowCount(0);
-			jTable_list.removeAll();
-			jTable_list.repaint();
+			viewControler.getDefaultTableModel().setRowCount(0);
+			viewControler.getjTable_list().removeAll();
+			viewControler.getjTable_list().repaint();
 			Thread flush = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -94,13 +92,13 @@ public class OpenAction implements ActionListener {
 							try{
 							src_ip = ipPacket.src_ip.toString().substring(1);
 							}catch(NullPointerException e){
-								log.error("src_ip无法获取");
+								GlobalValue.log.error("src_ip无法获取");
 								src_ip ="not found";
 							}
 							try{
 								dst_ip = ipPacket.dst_ip.toString().substring(1);
 								}catch(NullPointerException e){
-									log.error("src_ip无法获取");
+									GlobalValue.log.error("src_ip无法获取");
 									dst_ip ="not fount";
 								}
 							EthernetPacket arpPacket = (EthernetPacket) packet.datalink;
@@ -111,9 +109,9 @@ public class OpenAction implements ActionListener {
 							vectorRow.addElement(src_ip);
 							vectorRow.addElement(dst_ip);
 						}
-						defaultTableModel.addRow(vectorRow);
-						jTable_list.setModel(defaultTableModel);
-						jTable_list.revalidate();
+                        viewControler.getDefaultTableModel().addRow(vectorRow);
+                        viewControler.getjTable_list().setModel( viewControler.getDefaultTableModel());
+                        viewControler.getjTable_list().revalidate();
 						//核心逻辑执行完毕，让权
 						Thread.yield();
 					}
@@ -122,9 +120,9 @@ public class OpenAction implements ActionListener {
 			flush.start();
 		} catch (java.io.IOException ex) {
 			ex.printStackTrace();
-			log.error("文件读取失败");
+			GlobalValue.log.error("文件读取失败");
 			JOptionPane.showMessageDialog(
-				jFrame,
+				viewControler.getFrame(),
 				"Can't save file: " + file.getPath());
 		}
 	}

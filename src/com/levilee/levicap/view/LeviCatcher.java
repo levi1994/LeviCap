@@ -1,9 +1,5 @@
 package com.levilee.levicap.view;
-
 import java.awt.EventQueue;
-/**
- * @author levi
- */
 import java.awt.SystemColor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,7 +18,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import jpcap.JpcapCaptor;
-import jpcap.NetworkInterface;
 import com.levilee.levicap.control.ViewControler;
 import com.levilee.levicap.control.action.ExitAction;
 import com.levilee.levicap.control.action.OpenAction;
@@ -31,6 +26,11 @@ import com.levilee.levicap.control.action.StartAction;
 import com.levilee.levicap.control.action.StopAction;
 import com.levilee.levicap.control.action.TableMouseEvent;
 import com.levilee.levicap.model.GlobalValue;
+/**
+ * @author levi
+ *
+ */
+
 public class LeviCatcher {
 	private JFrame frame;
 	private JComboBox<String> comboBox_filter;
@@ -60,9 +60,9 @@ public class LeviCatcher {
 	private DefaultTableModel defaultTableModel;
 
 	// 声明视图控制器
-	private ViewControler viewComtroler;
+	private ViewControler viewControler;
 
-	private NetworkInterface[] devices;
+	
 	private String[] devicesname;
 	public static JpcapCaptor jCaptor;
 	/**
@@ -97,7 +97,7 @@ public class LeviCatcher {
 		initialize();
 		// 3.初始化界面控制器
 		GlobalValue.log.info("正在初始化界面控制器");
-		viewComtroler = new ViewControler(frame, comboBox_filter, menuBar,
+		viewControler = new ViewControler(frame, comboBox_filter, menuBar,
 				menu_file, openMenuItem, saveMenuItem, exitMenuItem,
 				mnMenu_other, mntmNewMenuItem_3, mntmNewMenuItem_4, mnNewMenu,
 				mntmNewMenuItem_5, menu_option, comboBox_device,
@@ -111,19 +111,15 @@ public class LeviCatcher {
 
 	/* 为按钮添加监听事件 */
 	private void initializeButton() {
-		button_start.addActionListener(new StartAction(button_start,
-				button_stop, comboBox_device, comboBox_filter, devices,
-				jTable_list, defaultTableModel));
+		button_start.addActionListener(new StartAction(viewControler));
 		button_stop
 				.addActionListener(new StopAction(button_start, button_stop));
-		button_save.addActionListener(new SaveAction(frame));
-		button_read.addActionListener(new OpenAction(frame, jTable_list,
-				defaultTableModel));
-		openMenuItem.addActionListener(new OpenAction(frame, jTable_list,
-				defaultTableModel));
-		saveMenuItem.addActionListener(new SaveAction(frame));
+		button_save.addActionListener(new SaveAction(viewControler));
+		button_read.addActionListener(new OpenAction(viewControler));
+		openMenuItem.addActionListener(new OpenAction(viewControler));
+		saveMenuItem.addActionListener(new SaveAction(viewControler));
 		exitMenuItem.addActionListener(new ExitAction());
-		jTable_list.addMouseListener(new TableMouseEvent(viewComtroler));
+		jTable_list.addMouseListener(new TableMouseEvent(viewControler));
 	}
 
 	/* 初始化界面 */
@@ -249,76 +245,10 @@ public class LeviCatcher {
 
 	// 初始化接口
 	private void initializeInterface() {
-		devices = JpcapCaptor.getDeviceList();
-		devicesname = new String[devices.length];
-		for (int i = 0; i < devices.length; i++) {
-			devicesname[i] = devices[i].description;
+		GlobalValue.devices = JpcapCaptor.getDeviceList();
+		devicesname = new String[GlobalValue.devices.length];
+		for (int i = 0; i < GlobalValue.devices.length; i++) {
+			devicesname[i] = GlobalValue.devices[i].description;
 		}
 	}
-
-	// 这是讲byte数组转化为String
-	// 这是列表点击事件
-//	class TableMouseEvent implements MouseListener {
-//		@Override
-//		public void mouseClicked(MouseEvent e) {
-//			// 获取选中行，参数 1： jTable_list
-//			int t = jTable_list.getSelectedRow();
-//			// 参数2：packetList
-//			MyPacket mypacket = GlobalValue.packetList.get(t);
-//			Packet packet = mypacket.getPacket();
-//			byte[] data = packet.data;
-//			String s = ByteUtil.byteToString(data).toUpperCase();
-//			// 参数3：textPane_data
-//			textPane_data.setText(s);
-//			// 显示基本的包信息
-//			String base_info = "";
-//			base_info += "包长度：" + mypacket.getPacket().len;
-//			// 参数4：textPane_info
-//			textPane_info.setText(base_info);
-//			// 显示选择列表
-//
-//			// 1.清空信息,参数4：comboBox_pacInfo
-//			GlobalValue.log.debug("清空所有数据");
-//			comboBox_pacInfo.removeAllItems();
-//			// 2.解析包数据,参数5：analyzer
-//			analyzer = new Analyzer();
-//			analyzer.getInfo(packet);
-//			// 添加事件
-//			comboBox_pacInfo.addActionListener(new InfoAction(textPane_info,
-//					comboBox_pacInfo, analyzer));
-//			// 3.设置下拉列表项目
-//			for (int i = 0; i < analyzer.namelist.size(); i++) {
-//				comboBox_pacInfo.addItem(analyzer.namelist.get(i));
-//			}
-//		}
-//
-//		public String getPacketInfo(Packet packet) {
-//			StringBuffer sbf = new StringBuffer();
-//			sbf.append("len:" + packet.len + "\n");
-//			sbf.append("sec:" + packet.sec + "\n");
-//			return sbf.toString();
-//
-//		}
-//
-//		@Override
-//		public void mousePressed(MouseEvent e) {
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//		@Override
-//		public void mouseReleased(MouseEvent e) {
-//
-//		}
-//
-//		@Override
-//		public void mouseEntered(MouseEvent e) {
-//
-//		}
-//
-//		@Override
-//		public void mouseExited(MouseEvent e) {
-//
-//		}
-//	}
 }

@@ -9,15 +9,16 @@ import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
+
+import com.levilee.levicap.control.ViewControler;
 import com.levilee.levicap.model.GlobalValue;
 public class SaveAction implements ActionListener {
 	private JFileChooser jFileChooser;
-	private JFrame jFrame;
-	private  Logger log = Logger.getLogger("log");
-	public SaveAction(JFrame jFrame) {
+	private ViewControler viewControler;
+	public SaveAction(ViewControler viewControler) {
 		// TODO Auto-generated constructor stub
-		this.jFrame = jFrame;
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class SaveAction implements ActionListener {
 		if (ret == JFileChooser.APPROVE_OPTION) {
 			file = jFileChooser.getSelectedFile();
 			if (file.exists()) {
-				if (JOptionPane.showConfirmDialog(jFrame,
+				if (JOptionPane.showConfirmDialog(viewControler.getFrame(),
 						"Overwrite " + file.getName() + "?", "Overwrite?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 					return;
@@ -37,7 +38,7 @@ public class SaveAction implements ActionListener {
 			}
 		}
 		if(file==null) {
-			log.error("无法获取选择文件数据");
+			GlobalValue.log.error("无法获取选择文件数据");
 			return;
 		}
 		try {
@@ -49,7 +50,7 @@ public class SaveAction implements ActionListener {
 		} catch (java.io.IOException ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(
-				jFrame,
+					viewControler.getFrame(),
 				"Can't save file: " + file.getPath());
 		}
 	}

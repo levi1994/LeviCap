@@ -39,7 +39,7 @@ public class LeviCatcher {
 	private JMenuItem openMenuItem;
 	private JMenuItem saveMenuItem;
 	private JMenuItem exitMenuItem;
-	private JMenu mnMenu_other;
+	private JMenu menu_function;
 	private JMenuItem mntmNewMenuItem_3;
 	private JMenuItem mntmNewMenuItem_4;
 	private JMenu mnNewMenu;
@@ -99,7 +99,7 @@ public class LeviCatcher {
 		GlobalValue.log.info("正在初始化界面控制器");
 		viewControler = new ViewControler(frame, comboBox_filter, menuBar,
 				menu_file, openMenuItem, saveMenuItem, exitMenuItem,
-				mnMenu_other, mntmNewMenuItem_3, mntmNewMenuItem_4, mnNewMenu,
+				menu_function, mntmNewMenuItem_3, mntmNewMenuItem_4, mnNewMenu,
 				mntmNewMenuItem_5, menu_option, comboBox_device,
 				comboBox_pacInfo, button_start, button_stop, button_save,
 				button_read, jTable_list, textPane_info, textPane_data,
@@ -143,17 +143,18 @@ public class LeviCatcher {
 
 		exitMenuItem = new JMenuItem("退出");
 		menu_file.add(exitMenuItem);
-		mnMenu_other = new JMenu("功能");
-		menuBar.add(mnMenu_other);
+		
+		menu_function = new JMenu("功能");
+		menuBar.add(menu_function);
 
-		mntmNewMenuItem_3 = new JMenuItem("New menu item");
-		mnMenu_other.add(mntmNewMenuItem_3);
+		mntmNewMenuItem_3 = new JMenuItem("发送数据");
+		menu_function.add(mntmNewMenuItem_3);
 
 		mntmNewMenuItem_4 = new JMenuItem("New menu item");
-		mnMenu_other.add(mntmNewMenuItem_4);
+		menu_function.add(mntmNewMenuItem_4);
 
 		mnNewMenu = new JMenu("menu ");
-		mnMenu_other.add(mnNewMenu);
+		menu_function.add(mnNewMenu);
 
 		mntmNewMenuItem_5 = new JMenuItem("New menu item");
 		mnNewMenu.add(mntmNewMenuItem_5);

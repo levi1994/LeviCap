@@ -1,5 +1,9 @@
 package com.levilee.levicap.model.bean;
-
+/*
+ * 这个类用于接收抓取到的包并进行处理
+ */
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Vector;
 
@@ -13,6 +17,7 @@ import com.levilee.levicap.model.GlobalValue;
 import com.levilee.levicap.model.util.ByteUtil;
 
 import jpcap.PacketReceiver;
+import jpcap.packet.ARPPacket;
 import jpcap.packet.DatalinkPacket;
 import jpcap.packet.EthernetPacket;
 import jpcap.packet.IPPacket;
@@ -23,7 +28,6 @@ public class MyReciver implements PacketReceiver {
 	private JTable jTable_list;
 	private DefaultTableModel defaultTableModel;
 	private Logger log = Logger.getLogger("log");
-	
 	public MyReciver() {
 	}
 
@@ -74,6 +78,22 @@ public class MyReciver implements PacketReceiver {
 			vectorRow.addElement(dst_mac);
 			vectorRow.addElement(src_ip);
 			vectorRow.addElement(dst_ip);
+		}
+		if(packet instanceof ARPPacket){
+			ARPPacket arppacket = (ARPPacket) packet;
+			vectorRow.clear();
+			
+			vectorRow.addElement(pac.getIndex() + "");
+			vectorRow.addElement(ByteUtil.macToString(arppacket.sender_hardaddr));
+			vectorRow.addElement(ByteUtil.macToString(arppacket.target_hardaddr));
+			try {
+				vectorRow.addElement(Inet4Address.getByAddress(arppacket.sender_protoaddr).toString());
+				vectorRow.addElement(Inet4Address.getByAddress(arppacket.target_protoaddr).toString());
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 		defaultTableModel.addRow(vectorRow);
 		jTable_list.setModel(defaultTableModel);

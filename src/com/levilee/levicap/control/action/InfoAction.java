@@ -18,7 +18,6 @@ public class InfoAction implements ActionListener {
 		if(t==-1) return;
 		//获取包信息并显示
 		GlobalValue.log.info("Combobox选中值为："+t);
-		System.out.println("infolist的大小为"+analyzer.infolist.size());
 		viewControler.getTextPane_info().setText(analyzer.infolist.get(t));
 	}
 

@@ -15,18 +15,18 @@ public class ByteUtil {
 		for (byte b : dst_mac) {
 			flag2++;
 			if (flag2 < dst_mac.length) {
-				sb.append(Integer.toHexString(b & 0xff) + ":");
+				sb.append(Integer.toHexString(b & 0xff) + "-");
 			} else{
 				sb.deleteCharAt(sb.length()-1);
 			}
 			
 		}
 		String string = sb.toString();
-		String[] array = string.split(":");
+		String[] array = string.split("-");
 		String result = "";
 		for(int i=0;i<array.length;i++){
 			if(array[i].length()<2)  array[i]="0"+array[i];
-			result=result+array[i]+":";
+			result=result+array[i]+"-";
 		}
 		
 		return result.substring(0, result.length()-1).toUpperCase();

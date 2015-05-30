@@ -7,19 +7,11 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import jpcap.packet.EthernetPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
-
-import org.apache.log4j.Logger;
-
 import com.levilee.levicap.control.ViewControler;
 import com.levilee.levicap.model.GlobalValue;
 import com.levilee.levicap.model.bean.MyPacket;

@@ -1,6 +1,7 @@
 package com.levilee.levicap.view;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -17,11 +18,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import jpcap.JpcapCaptor;
+
 import com.levilee.levicap.control.ViewControler;
 import com.levilee.levicap.control.action.ExitAction;
 import com.levilee.levicap.control.action.OpenAction;
 import com.levilee.levicap.control.action.SaveAction;
+import com.levilee.levicap.control.action.SendARPAction;
 import com.levilee.levicap.control.action.StartAction;
 import com.levilee.levicap.control.action.StopAction;
 import com.levilee.levicap.control.action.TableMouseEvent;
@@ -58,16 +62,10 @@ public class LeviCatcher {
 	private JLabel label_filter;
 	private JLabel label_packetInfo;
 	private DefaultTableModel defaultTableModel;
-
 	// 声明视图控制器
 	private ViewControler viewControler;
-
-	
 	private String[] devicesname;
 	public static JpcapCaptor jCaptor;
-	/**
-	 * 加载主程序
-	 */
 	public static void main(String[] args) {
 		// 设定界面风格
 		try {
@@ -120,6 +118,7 @@ public class LeviCatcher {
 		saveMenuItem.addActionListener(new SaveAction(viewControler));
 		exitMenuItem.addActionListener(new ExitAction());
 		jTable_list.addMouseListener(new TableMouseEvent(viewControler));
+		mntmNewMenuItem_3.addActionListener(new SendARPAction(viewControler));
 	}
 
 	/* 初始化界面 */
@@ -147,7 +146,7 @@ public class LeviCatcher {
 		menu_function = new JMenu("功能");
 		menuBar.add(menu_function);
 
-		mntmNewMenuItem_3 = new JMenuItem("发送数据");
+		mntmNewMenuItem_3 = new JMenuItem("发送ARP");
 		menu_function.add(mntmNewMenuItem_3);
 
 		mntmNewMenuItem_4 = new JMenuItem("New menu item");

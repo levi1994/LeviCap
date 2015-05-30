@@ -30,7 +30,6 @@ public class TableMouseEvent implements MouseListener {
 		viewControler.getTextPane_info().setText(base_info);
 
 		// 1.清空信息
-		GlobalValue.log.debug("清空所有数据");
 		viewControler.getComboBox_pacInfo().removeAllItems();
 		analyzer.infolist.clear();
 		analyzer.namelist.clear();

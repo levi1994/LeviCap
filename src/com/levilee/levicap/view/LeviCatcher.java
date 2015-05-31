@@ -1,7 +1,6 @@
 package com.levilee.levicap.view;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -34,7 +33,6 @@ import com.levilee.levicap.model.GlobalValue;
  * @author levi
  *
  */
-
 public class LeviCatcher {
 	private JFrame frame;
 	private JComboBox<String> comboBox_filter;
@@ -77,6 +75,7 @@ public class LeviCatcher {
 			public void run() {
 				try {
 					LeviCatcher window = new LeviCatcher();
+					window.frame.setTitle("LeviCap");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -123,6 +122,7 @@ public class LeviCatcher {
 
 	/* 初始化界面 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 546, 407);
